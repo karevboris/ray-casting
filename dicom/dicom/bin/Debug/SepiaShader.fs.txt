@@ -1,0 +1,46 @@
+﻿
+
+struct Ray
+{
+    vec3 origin;
+    vec3 dir;
+};
+
+uniform sampler3D tex;
+uniform vec3 camPos;
+uniform vec3 camDir;
+uniform vec3 camUp;
+uniform vec3 camRight;
+uniform float time;
+
+varying vec2 TexCoord;
+
+vec4 color=vec4(0.0,0.0,0.0,1.0);
+
+void main(void)
+{	
+  Ray ray;
+  float step=1;
+  float steps=10;
+  ray.origin=camPos;
+  ray.dir=normalize(camDir)*step;
+
+  vec4 outputColor = vec4(0.0,0.0,0.0,1.0);
+  vec4 isoColor= vec4(1.0,1.0,1.0,1.0);
+
+  while (steps)
+  {
+    steps--;
+    float value  = texture3D(tex, ray.origin);
+    //outputColor=texture3D(tex, vec3(TexCoord.x,TexCoord.y,0));
+
+    if (value>0.04)
+    {
+	outputColor = isoColor;
+	break;
+    }
+	ray.origin = ray.origin + ray.dir;
+   }
+  
+gl_FragColor = outputColor;
+}

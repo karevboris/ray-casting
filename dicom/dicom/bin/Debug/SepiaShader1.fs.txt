@@ -1,0 +1,55 @@
+﻿
+
+struct Ray
+{
+    vec3 origin;
+    vec3 dir;
+};
+
+uniform sampler3D tex;
+uniform vec3 camPos;
+uniform vec3 camDir;
+uniform vec3 camUp;
+uniform vec3 camRight;
+uniform float time;
+
+varying vec2 TexCoord;
+
+vec4 color=vec4(0.0,0.0,0.0,1.0);
+
+void main(void)
+{	
+  Ray ray;
+  float step=1;
+  float steps=1;
+  ray.origin=camPos;
+  //ray.dir=getRayDir()*step;
+  ray.dir=normalize(camPos-camDir)*step;
+
+  vec4 outputColor = vec4(0.0,0.0,0.0,1.0);
+  vec4 isoColor= vec4(1.0,1.0,1.0,1.0);    
+  float isoThr=0;
+
+  ray.origin.x=TexCoord.x;
+  ray.origin.y=TexCoord.y;
+  ray.origin.z=0;
+ 
+  //while (steps>0)
+  {
+    steps--;
+    // get trilinear interpolated value from 3d texture
+    //vec4 value  = texture3D(tex, ray.origin);
+    vec4 value  = texture3D(tex, vec3(TexCoord.x,TexCoord.y,0));
+    //outputColor=texture3D(tex, ray.origin);
+    //outputColor.a=0.5;
+   
+    if (value.a>0.04)
+    {
+	outputColor = isoColor;
+	//break;
+    }
+	ray.origin = ray.origin + ray.dir;
+  }
+  
+gl_FragColor = outputColor;
+}

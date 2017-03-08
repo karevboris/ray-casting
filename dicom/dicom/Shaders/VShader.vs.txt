@@ -1,0 +1,10 @@
+varying vec2 TexCoord;   // “екстурные координаты
+
+void main(void)
+{
+    // —охран€ем текстурные координаты
+    TexCoord = gl_MultiTexCoord0.st; 
+
+    // ¬ычисл€ем положение вершины в пространстве отсечени€
+    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+}

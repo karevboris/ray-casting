@@ -1,0 +1,15 @@
+C:\Учебное\3-ий курс\Научная\dicom\dicom\bin\Debug\dicom.exe.config
+C:\Учебное\3-ий курс\Научная\dicom\dicom\bin\Debug\dicom.exe
+C:\Учебное\3-ий курс\Научная\dicom\dicom\bin\Debug\dicom.pdb
+C:\Учебное\3-ий курс\Научная\dicom\dicom\bin\Debug\EvilDicom.dll
+C:\Учебное\3-ий курс\Научная\dicom\dicom\obj\Debug\dicom.Form1.resources
+C:\Учебное\3-ий курс\Научная\dicom\dicom\obj\Debug\dicom.Properties.Resources.resources
+C:\Учебное\3-ий курс\Научная\dicom\dicom\obj\Debug\dicom.csproj.GenerateResource.Cache
+C:\Учебное\3-ий курс\Научная\dicom\dicom\obj\Debug\dicom.exe
+C:\Учебное\3-ий курс\Научная\dicom\dicom\obj\Debug\dicom.pdb
+C:\Учебное\3-ий курс\Научная\dicom\dicom\obj\Debug\dicom.csprojResolveAssemblyReference.cache
+C:\Учебное\3-ий курс\Научная\dicom\dicom\bin\Debug\OpenTK.dll
+C:\Учебное\3-ий курс\Научная\dicom\dicom\bin\Debug\OpenTK.GLControl.dll
+C:\Учебное\3-ий курс\Научная\dicom\dicom\bin\Debug\OpenTK.pdb
+C:\Учебное\3-ий курс\Научная\dicom\dicom\bin\Debug\OpenTK.xml
+C:\Учебное\3-ий курс\Научная\dicom\dicom\bin\Debug\OpenTK.GLControl.xml

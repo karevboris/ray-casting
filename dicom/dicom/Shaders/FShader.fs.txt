@@ -1,0 +1,17 @@
+uniform sampler2D RenderTexture;                // Текстура с исходным изображением
+
+varying vec2 TexCoord;                          // Текстурные координаты
+
+const vec3 Luminance = vec3(0.3, 0.59, 0.11);   // Коэффициенты интенсивности компонент цвета
+
+const vec3 Sepia = vec3(1.0, 0.89, 0.54);       // Цвет фильтра 'Sepia'
+
+void main(void)
+{
+// Получаем исходный цвет фрагмента
+vec3 color = vec3(texture(RenderTexture, TexCoord));
+
+// Вычисляем новый цвет фрагмента
+//gl_FragColor = vec4(dot(color, Luminance) * Sepia, 1.0);
+gl_FragColor = vec4(texture(RenderTexture, TexCoord), 1.0);
+}
