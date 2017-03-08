@@ -53,7 +53,7 @@ namespace dicom
                             density[i, j, z] = imgFile.Image[i * imgFile.Properties.Rows + j]/10000;
                             //density[i, j, z] = imgFile.Image[i * imgFile.Properties.Rows + j] - min;
                             //density[i, j, z] /= (max - min) / 255f;
-                            d[i * imgFile.Properties.Rows + j + z * imgFile.Properties.Rows * imgFile.Properties.Columns] = density[i, j, z];
+                            d[(imgFile.Properties.Rows-1-i) * imgFile.Properties.Rows + j + z * imgFile.Properties.Rows * imgFile.Properties.Columns] = density[i, j, z];
                         }
                 }
            

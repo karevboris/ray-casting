@@ -113,7 +113,7 @@ namespace dicom
             GL.Uniform1(GL.GetUniformLocation(IlluminationProgramID, "tex"), imageTextureID);
             
             GL.Uniform3(GL.GetUniformLocation(IlluminationProgramID, "camPos"), cameraPosition);
-            GL.Uniform3(GL.GetUniformLocation(IlluminationProgramID, "camDir"), cameraDirecton.Normalized());
+            GL.Uniform3(GL.GetUniformLocation(IlluminationProgramID, "camDir"), cameraDirecton);
             GL.Uniform3(GL.GetUniformLocation(IlluminationProgramID, "camUp"), cameraUp);
             GL.Uniform3(GL.GetUniformLocation(IlluminationProgramID, "camRight"), cameraRight);
             GL.Uniform1(GL.GetUniformLocation(IlluminationProgramID, "time"), time);

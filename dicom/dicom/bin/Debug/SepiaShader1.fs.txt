@@ -13,15 +13,15 @@ uniform vec3 camUp;
 uniform vec3 camRight;
 uniform float time;
 
-varying vec2 TexCoord;
+varying vec3 TexCoord;
 
 vec4 color=vec4(0.0,0.0,0.0,1.0);
 
 void main(void)
 {	
   Ray ray;
-  float step=1;
-  float steps=1;
+  float step=0.75;
+  float steps=100;
   ray.origin=camPos;
   //ray.dir=getRayDir()*step;
   ray.dir=normalize(camPos-camDir)*step;
@@ -30,24 +30,25 @@ void main(void)
   vec4 isoColor= vec4(1.0,1.0,1.0,1.0);    
   float isoThr=0;
 
-  ray.origin.x=TexCoord.x;
-  ray.origin.y=TexCoord.y;
-  ray.origin.z=0;
+  //ray.origin.x=TexCoord.x;
+  //ray.origin.y=TexCoord.y;
+  //ray.origin.z=TexCoord.z;
  
-  //while (steps>0)
+  while (steps>0)
   {
     steps--;
     // get trilinear interpolated value from 3d texture
     //vec4 value  = texture3D(tex, ray.origin);
-    vec4 value  = texture3D(tex, vec3(TexCoord.x,TexCoord.y,0));
+    vec4 value  = texture3D(tex, vec3(TexCoord.x,TexCoord.y,TexCoord.z));
     //outputColor=texture3D(tex, ray.origin);
     //outputColor.a=0.5;
    
     if (value.a>0.04)
     {
 	outputColor = isoColor;
-	//break;
+	break;
     }
+	TexCoord.z+=step;
 	ray.origin = ray.origin + ray.dir;
   }
   
