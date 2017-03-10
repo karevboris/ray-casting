@@ -126,7 +126,6 @@ namespace dicom
         private void drawScreen()
         {
             GL.Enable(EnableCap.Texture2D);
-            //GL.BindTexture(TextureTarget.Texture2D, texturesIDs[0]);
             GL.Begin(PrimitiveType.Quads);        
             GL.TexCoord2(0.0, 0.0);
             GL.Vertex3(0f, -1.2f, -1.0f);          
@@ -137,7 +136,6 @@ namespace dicom
             GL.TexCoord2(1.0, 0.0);
             GL.Vertex3(0f, 1.2f, -1.0f);
             GL.End();
-            
             GL.Disable(EnableCap.Texture2D);
         }
 
