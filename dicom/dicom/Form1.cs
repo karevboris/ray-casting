@@ -25,6 +25,7 @@ namespace dicom
         GLgraphics glgraphics = new GLgraphics();
         public float[,,] density;
         public float[] d;
+        public Data arr; 
         int load = 0;
         int load1 = 0;
         int row, col, dep;
@@ -68,7 +69,7 @@ namespace dicom
         {
 
             glgraphics.Update(d, row, col, dep);
-            glControl1.SwapBuffers();
+            //glgraphics.Update(arr.data, arr.H, arr.W, arr.D);
         }
         private void glControl1_Load(object sender, EventArgs e)
         {
@@ -81,10 +82,11 @@ namespace dicom
             /*float widthCoef = (e.X - glControl1.Width * 0.5f) / (float)glControl1.Width;
             float heightCoef = (-e.Y + glControl1.Height * 0.5f) / (float)glControl1.Height;
             glgraphics.latitude = heightCoef * 180;
-            glgraphics.longitude = widthCoef * 360;
-            if (load == 1)*/
+            glgraphics.longitude = widthCoef * 360;*/
+            if (load == 1)
             {
                 glgraphics.Update(d, row, col, dep);
+                //glgraphics.Update(arr.data, arr.H, arr.W, arr.D);
                 glControl1.SwapBuffers();
             }
         }
@@ -134,6 +136,22 @@ namespace dicom
                     glControl1.SwapBuffers();
                 }
             }*/
+        }
+
+        private void открытьBinToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                short[] tmp=new short[0];
+                arr=new Data(tmp,0,0,0,0,0,0);
+                arr.readBinFile(dialog.FileName);
+                Console.WriteLine(arr.H);
+                Console.WriteLine(arr.sX);
+                Console.WriteLine(arr.W);
+                Console.WriteLine(arr.D);
+                load = 1;
+            }
         }
 
     }

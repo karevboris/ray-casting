@@ -14,9 +14,9 @@ namespace dicom
 {
     class GLgraphics
     {
-        Vector3 cameraPosition = new Vector3(2, 0, 0);
-        Vector3 cameraDirecton = new Vector3(1, 0, 0);
-        Vector3 cameraUp = new Vector3(0, 0, 1);
+        Vector3 cameraPosition = new Vector3(0, 0, 350);
+        Vector3 cameraDirecton = new Vector3(0, 0, 1);
+        Vector3 cameraUp = new Vector3(1, 0, 0);
         Vector3 cameraRight = new Vector3(0, 1.2f, 0);
 
         //public float latitude = 47.98f;
@@ -32,7 +32,7 @@ namespace dicom
             GL.ClearColor(Color.DarkGray);
             GL.ShadeModel(ShadingModel.Smooth);
             GL.Enable(EnableCap.DepthTest);
-            Matrix4 perspectiveMat = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, width / (float)height, 1, 64);
+            Matrix4 perspectiveMat = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, width / (float)height, 1, 500);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref perspectiveMat);
 
@@ -99,7 +99,8 @@ namespace dicom
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
             GL.Uniform1(GL.GetUniformLocation(IlluminationProgramID, "tex"), imageTextureID);*/
 
-            GL.UseProgram(IlluminationProgramID); GL.Enable(EnableCap.Texture3DExt);
+            GL.UseProgram(IlluminationProgramID); 
+            GL.Enable(EnableCap.Texture3DExt);
             /*float[] tmp = new float[x * y];
             for (int i = 0; i < y; i++)
                 for (int j = 0; j < x; j++) tmp[i * x + j] = den[i, j, 0];*/
@@ -128,13 +129,13 @@ namespace dicom
             GL.Enable(EnableCap.Texture2D);
             GL.Begin(PrimitiveType.Quads);        
             GL.TexCoord2(0.0, 0.0);
-            GL.Vertex3(0f, -1.2f, -1.0f);          
+            GL.Vertex3(-128.0f, -128.0f, 0f);          
             GL.TexCoord2(0.0, 1.0);
-            GL.Vertex3(0f, -1.2f, 1.0f);           
+            GL.Vertex3(-128.0f, 128.0f, 0f);           
             GL.TexCoord2(1.0, 1.0);
-            GL.Vertex3(0f, 1.2f, 1.0f);           
+            GL.Vertex3(128.0f, 128.0f, 0f);           
             GL.TexCoord2(1.0, 0.0);
-            GL.Vertex3(0f, 1.2f, -1.0f);
+            GL.Vertex3(128.0f, -128.0f, 0f);
             GL.End();
             GL.Disable(EnableCap.Texture2D);
         }

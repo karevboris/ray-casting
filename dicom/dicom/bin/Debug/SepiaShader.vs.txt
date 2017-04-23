@@ -1,8 +1,8 @@
-varying vec3 TexCoord;
+varying vec3 Vertex, Normal;
 
 void main(void)
 {
-    TexCoord = gl_MultiTexCoord0;
-
-    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+    Vertex=vec3(gl_ModelViewMatrix*gl_Vertex);
+    Normal=vec3(gl_Normal);
+    gl_Position=ftransform();
 }

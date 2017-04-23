@@ -32,6 +32,7 @@
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.glControl1 = new OpenTK.GLControl();
+            this.открытьBinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,7 +49,8 @@
             // файлToolStripMenuItem
             // 
             this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.открытьToolStripMenuItem});
+            this.открытьToolStripMenuItem,
+            this.открытьBinToolStripMenuItem});
             this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
             this.файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.файлToolStripMenuItem.Text = "Файл";
@@ -56,7 +58,7 @@
             // открытьToolStripMenuItem
             // 
             this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
-            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.открытьToolStripMenuItem.Text = "Открыть";
             this.открытьToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
             // 
@@ -72,6 +74,13 @@
             this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
             this.glControl1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.glControl1_KeyPress);
             this.glControl1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.glControl1_MouseMove);
+            // 
+            // открытьBinToolStripMenuItem
+            // 
+            this.открытьBinToolStripMenuItem.Name = "открытьBinToolStripMenuItem";
+            this.открытьBinToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.открытьBinToolStripMenuItem.Text = "Открыть bin";
+            this.открытьBinToolStripMenuItem.Click += new System.EventHandler(this.открытьBinToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -97,6 +106,7 @@
         private System.Windows.Forms.ToolStripMenuItem файлToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem открытьToolStripMenuItem;
         private OpenTK.GLControl glControl1;
+        private System.Windows.Forms.ToolStripMenuItem открытьBinToolStripMenuItem;
     }
 }
 
