@@ -1,0 +1,5 @@
+C:\Учебное\3-ий курс\Научная\ray-casting\dicom\dicom\bin\Release\dicom.exe.config
+C:\Учебное\3-ий курс\Научная\ray-casting\dicom\dicom\obj\Release\dicom.csprojResolveAssemblyReference.cache
+C:\Учебное\3-ий курс\Научная\ray-casting\dicom\dicom\obj\Release\dicom.Form1.resources
+C:\Учебное\3-ий курс\Научная\ray-casting\dicom\dicom\obj\Release\dicom.Properties.Resources.resources
+C:\Учебное\3-ий курс\Научная\ray-casting\dicom\dicom\obj\Release\dicom.csproj.GenerateResource.Cache

@@ -26,20 +26,22 @@ namespace dicom
         public List<int> texturesIDs = new List<int>();
 
         public float time = 0;
+        public float min_level = 0, max_level = 0;
+        public int x=0, y=0, z=0;
 
         public string Setup(int width, int height)
         {
             GL.ClearColor(Color.DarkGray);
             GL.ShadeModel(ShadingModel.Smooth);
             GL.Enable(EnableCap.DepthTest);
-            Matrix4 perspectiveMat = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, width / (float)height, 1, 500);
+            Matrix4 perspectiveMat = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, width / (float)height, 1, 1000);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref perspectiveMat);
 
             return InitShaders();
         }
 
-        public void Update(float[] den, int x, int y, int z)
+        public void Update(float[] den)
         {
             //cameraPosition = new Vector3(
                         //(float)(radius * Math.Cos(Math.PI / 180.0f * latitude) * Math.Cos(Math.PI / 180.0f * longitude)),
@@ -49,10 +51,10 @@ namespace dicom
             Matrix4 viewMat = Matrix4.LookAt(cameraPosition, cameraDirecton, cameraUp);
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadMatrix(ref viewMat);
-            Render(den, y, x, z);
+            Render(den);
         }
 
-        unsafe public void Render(float [] den, int x, int y, int z)
+        unsafe public void Render(float [] den)
         {
             
             /*GL.ActiveTexture(TextureUnit.Texture0);
@@ -118,6 +120,11 @@ namespace dicom
             GL.Uniform3(GL.GetUniformLocation(IlluminationProgramID, "camUp"), cameraUp);
             GL.Uniform3(GL.GetUniformLocation(IlluminationProgramID, "camRight"), cameraRight);
             GL.Uniform1(GL.GetUniformLocation(IlluminationProgramID, "time"), time);
+            GL.Uniform1(GL.GetUniformLocation(IlluminationProgramID, "min_level"), min_level);
+            GL.Uniform1(GL.GetUniformLocation(IlluminationProgramID, "max_level"), max_level);
+            GL.Uniform1(GL.GetUniformLocation(IlluminationProgramID, "heigth"), x);
+            GL.Uniform1(GL.GetUniformLocation(IlluminationProgramID, "weigth"), y);
+            GL.Uniform1(GL.GetUniformLocation(IlluminationProgramID, "dep"), z);
             GL.Color3(Color.Blue);
             drawScreen();
             time += 0.01f;

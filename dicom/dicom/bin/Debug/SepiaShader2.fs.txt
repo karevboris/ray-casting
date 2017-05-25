@@ -5,8 +5,6 @@ uniform vec3 camDir;
 uniform vec3 camUp;
 uniform vec3 camRight;
 uniform float time;
-uniform float min_level, max_level;
-uniform int heigth, weigth, dep;
 
 varying vec3 Vertex, Normal;
 
@@ -15,7 +13,6 @@ varying vec3 Vertex, Normal;
 #define K_S 0.3
 #define P 32.0
 #define LightDir vec3(1,0,0)
-#define global_opacity 1024.0
 
 const vec3 level_color1 = vec3(0.6);	
 const vec3 level_color2 = vec3(0.7,0.55,0.55);	
@@ -76,19 +73,19 @@ float interpolate_cubic(sampler3D tex, vec3 coord,vec3 cell_size1)
 
 float Equ(in vec3 arg)
 {
-	vec3 txt_box1=vec3(-128, -128, 0);
-	vec3 txt_box2=vec3(128, 128, dep);
+	vec3 txt_box1=vec3(-128,-128,0);
+	vec3 txt_box2=vec3(128,128,100);
 	
 	//return interpolate_cubic(tex,(arg-txt_box1)/(txt_box2-txt_box1), vec3(1,1,1));
 	return texture3D(tex, (arg-txt_box1)/(txt_box2-txt_box1)).a;
 }
 
-vec3 GradEqu(in vec3 arg, in vec3 cell_size, in float e)
+vec3 GradEqu(in vec3 arg, in vec3 cell_size)
 {
 	vec3 res;
-	res.x = Equ(vec3(arg.x+cell_size.x,arg.y,arg.z))-e;
-	res.y = Equ(vec3(arg.x,arg.y+cell_size.y,arg.z))-e;
-	res.z = Equ(vec3(arg.x,arg.y,arg.z+cell_size.z))-e;
+	res.x = Equ(vec3(arg.x+cell_size.x,arg.y,arg.z))-Equ(vec3(arg.x-cell_size.x,arg.y,arg.z));
+	res.y = Equ(vec3(arg.x,arg.y+cell_size.y,arg.z))-Equ(vec3(arg.x,arg.y-cell_size.y,arg.z));
+	res.z = Equ(vec3(arg.x,arg.y,arg.z+cell_size.z))-Equ(vec3(arg.x,arg.y,arg.z-cell_size.z));
 	return normalize(res/cell_size);
 }
 
@@ -103,13 +100,6 @@ bool IntersectBox ( vec3 Origin,vec3 Direction, vec3 minimum, vec3 maximum, out 
 	return final > start;
 } 
 
-vec4 GetLevelColor(float lv) 
-{
-	float res_den = (lv-min_level)/(max_level-min_level);
-	//return vec4(1-floor(res_den/0.003922)*0.003922, 1-floor(res_den/0.003922)*0.003922, 1-floor(res_den/0.003922)*0.003922, res_den);
-	return vec4(res_den, res_den, res_den, res_den);
-}
-
 float rand(vec4 co)
 {
 	return fract(sin(dot(co,vec4(12.9898,78.233,12.9898,78.233))) * 1000.0);
@@ -123,22 +113,18 @@ struct Ray
 
 void main(void)
 {
-	#define DIV_NUM 4.0
 	vec3 norm, ray = normalize(Vertex-camPos);
 	float step_length=0.25;
-	vec3 cell_size=vec3 (1, 1, 1.0);
-	float ddd=step_length*global_opacity/DIV_NUM;
+	vec3 cell_size=vec3 (1.0, 1.0, 1.0);
 		
 	vec4 step  = vec4(ray*step_length,step_length);
 	vec4 ps = vec4(camPos,0.0);
 
 	float e=0.0,e0=0.0, start,final;
-	vec3 box1=vec3(-128, -128, 0);
-	vec3 box2=vec3(128, 128, 100);
-	vec3 norm0;
-	vec4 cl=vec4(0.0);
+	vec3 box1=vec3(-128,-128,0);
+	vec3 box2=vec3(128,128,100);	
 
-	vec2 txt_coord = gl_FragCoord.xy/vec2(256, 256);
+	vec2 txt_coord = gl_FragCoord.xy/vec2(256,256);
 	vec4 color=vec4(0.0);
 	vec4 dist_to_polygon = vec4(0.0, 0.0, 0.0, sqrt(Vertex.y*Vertex.y+sqrt(Vertex.x*Vertex.x+350*350)));
 	
@@ -156,55 +142,41 @@ void main(void)
 		
 		e = Equ(ps.xyz);
 		ps += step;
-		norm = (GradEqu(ps.xyz-step.xyz, cell_size, e)+vec3(0.000001));
-
+		float iso_value = 0.05;
+		if(e<=iso_value)
+		{
 		for (float itt = 0.0; ps.w<=final && itt < float ( 2000.0 ); itt+=1.0 )
 		{
 			e0 = e;
 			e = Equ(ps.xyz);
-
-			if(e>min_level || e0>min_level)
-			if(GetLevelColor(e).w>0.00 || GetLevelColor(e0).w>0.00)
-			{
-				float d_alpha;
-				
-				//#if use_shading
-					norm0 = norm;
-					norm = (GradEqu(ps.xyz, cell_size, e)+vec3(0.000001));
-				//#endif
-
-				for(float jj=0.5/DIV_NUM;jj<1.0;jj+=1.0/DIV_NUM)
-				{
-					float interp_e = mix(e0,e,jj);
-					cl = GetLevelColor(interp_e);
-					//#if use_shading
-						cl.xyz = Phong(ps.xyz,-normalize(mix(norm0,norm,jj)),cl.xyz);
-					//#endif
-					
-					d_alpha = (1-color.w) * cl.w;
-					color.xyz = color.xyz + d_alpha* cl.xyz;
-					color.w = color.w + d_alpha;
-				}
-				
-				if(color.w>0.98)	break;
-			}
-			
+			if(e>iso_value )	break;
 			ps += step;
-			
+		}
+		}else
+		for (float itt = 0.0; ps.w<=final && itt < float ( 2000.0 ); itt+=1.0 )
+		{
+			e0 = e;
+			e = Equ(ps.xyz);
+			if(e<=iso_value )	break;
+			ps += step;
 		}
 		
-		if(color.w>0.98)
+		if(ps.w<=final)
 		{
-		
-			color.w=1.0;
-		}
-
-		/*if(ps.w>dist_to_polygon.w)
-		{
-			color.xyz += dist_to_polygon.xyz*(1.0-color.w);
-			
+			if(e>iso_value && e0<=iso_value)
+			{
+				color.xyz = level_color1;
+				ps += step * ((iso_value-e)/(e-e0));
+				norm = -GradEqu(ps, cell_size);
+			}else
+			{
+				color.xyz = level_color2;
+				ps += step * ((iso_value-e)/(e-e0));
+				norm = GradEqu(ps, cell_size);
+			}
+			color.xyz = Phong(ps,norm,color.xyz);
 			color.w = 1.0;
-		}*/
+		}
 	}
 	gl_FragColor = color;
 }

@@ -25,7 +25,7 @@ namespace dicom
         GLgraphics glgraphics = new GLgraphics();
         public float[,,] density;
         public float[] d;
-        public Data arr; 
+        public Data arr;
         int load = 0;
         int load1 = 0;
         int row, col, dep;
@@ -38,27 +38,53 @@ namespace dicom
             {
                 count=dialog.FileNames.Length;
                 var imgFile = new ImageMatrix(dialog.FileNames[0]);
-                row = imgFile.Properties.Rows;
-                col = imgFile.Properties.Columns;
-                dep = count;
-                density = new float [row,col,dep];
+                glgraphics.x = row = imgFile.Properties.Rows;
+                glgraphics.y = col = imgFile.Properties.Columns;
+                glgraphics.z = dep = count;
+                density = new float[glgraphics.x, glgraphics.y, glgraphics.z];
+                //density = new float[dep, col, row];
                 d = new float[row * col * dep];
-                for (int z = 0; z < count; z++)
+                /*for (int z = 0; z < count; z++)
                 {
                     imgFile = new ImageMatrix(dialog.FileNames[z]);
                     float max = imgFile.Image.Max();
                     float min = imgFile.Image.Min();
-                    for (int i = 0; i < imgFile.Properties.Rows; i++)
+                    for (int i = 0; i < row; i++)
                         for (int j = 0; j < imgFile.Properties.Columns; j++)
                         {
-                            density[i, j, z] = imgFile.Image[i * imgFile.Properties.Rows + j]/10000;
+                            density[i, j, z] = imgFile.Image[i * imgFile.Properties.Columns + j] / 10000;
                             //density[i, j, z] = imgFile.Image[i * imgFile.Properties.Rows + j] - min;
                             //density[i, j, z] /= (max - min) / 255f;
-                            d[(imgFile.Properties.Rows-1-i) * imgFile.Properties.Rows + j + z * imgFile.Properties.Rows * imgFile.Properties.Columns] = density[i, j, z];
+                            d[(row - 1 - i) * imgFile.Properties.Columns + j + z * row * imgFile.Properties.Columns] = density[i, j, z];                       
+                        }
+                }*/
+                for (int z = 0; z < count; z++)
+                {
+                    imgFile = new ImageMatrix(dialog.FileNames[z]);
+                    float max = imgFile.Image.Max()/10000;
+                    float min = imgFile.Image.Min()/10000;
+                    if (max > glgraphics.max_level) glgraphics.max_level = max;
+                    if (min < glgraphics.min_level) glgraphics.min_level = min;
+                    for (int i = 0; i < row; i++)
+                        for (int j = 0; j < col; j++)
+                        {
+                            density[i, j, z] = imgFile.Image[i * imgFile.Properties.Columns + j] / 10000;
+                            //density[i, j, z] = imgFile.Image[i * imgFile.Properties.Rows + j] - min;
+                            //density[i, j, z] /= (max - min) / 255f;
+                            //d[(imgFile.Properties.Rows-1-i) * imgFile.Properties.Rows + j + z * imgFile.Properties.Rows * imgFile.Properties.Columns] = density[i, j, z];
+                            //d[(imgFile.Properties.Rows - 1 - i) * imgFile.Properties.Rows + j + z * count * imgFile.Properties.Columns] = density[i, j, z];
+                        }
+                }
+                for (int z = 0; z < count; z++)
+                {
+                    for (int i = 0; i < row; i++)
+                        for (int j = 0; j < col; j++)
+                        {
+                            d[(row - 1 - i) * col + j + z * row * col] = density[i, j, count - 1 - z];
                         }
                 }
            
-                /*GL.TexImage3D(TextureTarget.Texture3D, 0, 
+                /*GL.TexImage3D(TextureTarget.Texture3D, 0, од
                     PixelInternalFormat.Rgba, imgFile.Properties.Rows, imgFile.Properties.Columns, count, 0,
                     OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.Float, density);*/
               }
@@ -68,7 +94,7 @@ namespace dicom
         private void glControl1_Paint(object sender, PaintEventArgs e)
         {
 
-            glgraphics.Update(d, row, col, dep);
+            glgraphics.Update(d);
             //glgraphics.Update(arr.data, arr.H, arr.W, arr.D);
         }
         private void glControl1_Load(object sender, EventArgs e)
@@ -85,7 +111,7 @@ namespace dicom
             glgraphics.longitude = widthCoef * 360;*/
             if (load == 1)
             {
-                glgraphics.Update(d, row, col, dep);
+                glgraphics.Update(d);
                 //glgraphics.Update(arr.data, arr.H, arr.W, arr.D);
                 glControl1.SwapBuffers();
             }
