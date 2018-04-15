@@ -1,0 +1,5 @@
+﻿  main.cpp
+main.cpp(97): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  Создание кода
+  Создание кода завершено
+  OpenMP.vcxproj -> C:\Учебное\4-ый курс\Диплом\OpenMP\x64\Release\OpenMP.exe

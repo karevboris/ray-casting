@@ -1,0 +1,8 @@
+varying vec3 Vertex, Normal;
+
+void main(void)
+{
+    Vertex=vec3(gl_ModelViewMatrix*gl_Vertex);
+    Normal=vec3(gl_Normal);
+    gl_Position=ftransform();
+}
